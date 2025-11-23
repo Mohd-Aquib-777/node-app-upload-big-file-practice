@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File upload and download</title>
+</head>
+<body>
+    <h4>file upload</h4>
+    <input type="file" name="uplaod video file" id="fileUpload">
+    <button id="uploadFileBtn" onclick="uploadFile()">Uplaod File <span id="uploadPercentTxt"></span></button>
+    <hr>
+    <br>
+    <h4>file download</h4>
+    <input type="text" name="" placeholder="filename" id="filename">
+    <button id="downloadMoveButton" onclick="downloadMovie()">Download Movie <span id="downloadMoveStatus"></span></button>
+    <hr>
+    <script>
+        const uploadFile = async () => { 
+            try {
+                console.log(`document.getElementById("fileUpload")`,document.getElementById("fileUpload").files)
+                const fileData = document.getElementById("fileUpload").files[0];
+                const xhr = new XMLHttpRequest();
+                const url = `http://localhost:3004/upload-file`;
+                xhr.open("POST", url);
+                xhr.setRequestHeader("x-filename", fileData.name);
+                xhr.upload.onprogress = (ev)=>{
+                    if(ev.lengthComputable){
+                        const percent = Math.round((ev.loaded/ev.total)*100);
+                        document.getElementById("uploadPercentTxt").innerText = `${percent} %`
+                    }
+                }
+                xhr.onload = ()=>{
+                    // alert(xhr.responseText);
+                    console.log("File Upload Response text", xhr.responseText);
+                    document.getElementById("uploadPercentTxt").innerText = "File Uploaded"
+                }
+                xhr.send(fileData);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+
+        const downloadMovie = ()=>{
+            const filename = document.getElementById("filename").value;
+            const xhr = new XMLHttpRequest();
+            const url = `http://localhost:3004/download-file/${filename}`;
+            xhr.open("GET", url);
+            xhr.responseType="blob";
+
+            xhr.onprogress = (ev) => {
+                if(ev.lengthComputable){
+                    const percentage = Math.round((ev.loaded/ev.total)*100);
+                    document.getElementById("downloadMoveStatus").innerText = percentage;
+                }
+            }
+            xhr.onload = ()=>{
+                if(xhr.status===200){
+                    console.log("xhr.response",xhr.response)
+                    const blob = xhr.response;
+                    const downloadUrl = URL.createObjectURL(blob);
+                    const a = document.createElement("a");
+                    a.href = downloadUrl;
+                    a.download = filename; // rename if you want
+                    a.click();
+                    URL.revokeObjectURL(downloadUrl);
+                }
+                // document.getElementById("downloadMoveStatus").innerText = xhr.responseText;
+            }
+            xhr.send();
+        }
+
+    </script>
+</body>
+</html>

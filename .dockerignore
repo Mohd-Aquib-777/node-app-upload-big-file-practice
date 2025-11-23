@@ -1,0 +1,6 @@
+.dockerignore
+docker-compose.yaml
+dockerfile
+start-docker
+stop-docker
+# node_modules
