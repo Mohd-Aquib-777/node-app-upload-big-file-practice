@@ -7,7 +7,7 @@ services:
     container_name: node_app_1
     env_file: docker.local.props.env
     volumes:
-      - ./nodeApp:/myApp/nodeApp
+      # - ./nodeApp:/myApp/nodeApp
     # working_dir: /myApp
       - /app/node_modules
     ports:
@@ -29,8 +29,8 @@ services:
     build: .
     container_name: node_app_2
     env_file: docker.local.props.env
-    volumes:
-      - ./nodeApp:/myApp/nodeApp
+    # volumes:
+      # - ./nodeApp:/myApp/nodeApp
     ports:
       - "3001:3001"
     environment: 
@@ -48,8 +48,8 @@ services:
     build: .
     container_name: node_app_3
     env_file: docker.local.props.env
-    volumes:
-      - ./nodeApp:/myApp/nodeApp
+    # volumes:
+      # - ./nodeApp:/myApp/nodeApp
     ports:
       - "3002:3002"
     environment: 
@@ -67,8 +67,8 @@ services:
     build: .
     container_name: node_app_4
     env_file: docker.local.props.env
-    volumes:
-      - ./nodeApp:/myApp/nodeApp
+    # volumes:
+      # - ./nodeApp:/myApp/nodeApp
       # - ./:/myApp
     ports:
       - "3004:3004"
