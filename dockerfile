@@ -7,6 +7,7 @@ RUN apk update && apk upgrade
 WORKDIR /myApp
 COPY package.json .
 COPY . .
+COPY ./nodeApp ./nodeApp
 RUN npm install
 EXPOSE 3000
 CMD ["npx", "nodemon", "./nodeApp/app.js"]
