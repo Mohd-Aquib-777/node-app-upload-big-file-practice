@@ -9,7 +9,7 @@ app.use(express.json());
 
 // parse application/json
 // app.use(bodyParser.json())
-const getRequestInfo = (req)=>{
+const getRequestInfo = (req) => {
     return portInfo = {
         // Client information
         client: {
@@ -17,13 +17,13 @@ const getRequestInfo = (req)=>{
             port: req.socket.remotePort,
             family: req.socket.remoteFamily
         },
-        
+
         // Server information
         server: {
             port: req.socket.localPort,
             address: req.socket.localAddress
         },
-        
+
         // URL information
         url: {
             host: req.get('host'),
@@ -32,7 +32,7 @@ const getRequestInfo = (req)=>{
             baseUrl: req.baseUrl,
             path: req.path
         },
-        
+
         // Headers related to ports and proxies
         headers: {
             host: req.headers.host,
@@ -40,7 +40,7 @@ const getRequestInfo = (req)=>{
             xForwardedPort: req.headers['x-forwarded-port'],
             xForwardedProto: req.headers['x-forwarded-proto']
         },
-        
+
         // Connection information
         connection: {
             encrypted: req.secure,
@@ -50,22 +50,22 @@ const getRequestInfo = (req)=>{
     };
 }
 
-app.post("/post-data", (req, res)=>{
-    console.log("@@@@@@@@@@@@@@dfd", req.body);
-    const info  = getRequestInfo(req);  
+app.post("/post-data", (req, res) => {
+    console.log("@@@@@@@@@@@@@@dfd@@@", req.body);
+    const info = getRequestInfo(req);
     console.log("headers+++++++++++cvfc", req.headers)
-    res.json({message: "data saved", data: req.body});
+    res.json({ message: "data saved", data: req.body });
 });
-   
-app.get("/get-data", (req, res)=>{
+
+app.get("/get-data", (req, res) => {
     // console.log("@@@@@@@@@@@@@@", req.body);
-    const info  = getRequestInfo(req);
+    const info = getRequestInfo(req);
 
-    console.log("headers++++++++++cdcd  d fcdscds+aaa",info)
-    res.json({message: "data saved", info});
+    console.log("headers++++++++++cdcd  d fcdscds+aaa", info)
+    res.json({ message: "data saved", info });
 });
 
 
-app.listen(port, ()=>{
+app.listen(port, () => {
     console.log("server is running on port", port);
 });
