@@ -93,7 +93,7 @@ services:
     volumes:
     - ./nginx:/etc/nginx/nginx.conf
     depends_on:
-      - node1
+      - node1 
       - node2
       - node3
     networks:

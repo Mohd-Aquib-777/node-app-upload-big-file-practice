@@ -2,10 +2,11 @@ pipeline {
     agent any
 
     stages {
+        
         stage('Checkout') {
             steps {
                 // This pulls your code from Git
-                git branch: 'mainmaster-jenkins-practice', url: 'https://github.com/Mohd-Aquib-777/node-app-upload-big-file-practice.git'
+                git branch: 'master-jenkins-practice', url: 'https://github.com/Mohd-Aquib-777/node-app-upload-big-file-practice.git'
             }
         }
 
@@ -16,6 +17,7 @@ pipeline {
                         sh '''
                         pwd
                         ls
+                        docker compose down
                         docker compose up -d --build
                         '''
                         // -d runs it in the background
@@ -34,6 +36,7 @@ pipeline {
                 expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
             }
             steps {
+                sh 'currentBuild = ${currentBuild}'
                 sh '''
                 mkdir -p /backup/My-Pipeline-${BUILD_NUMBER}
                 cp -r ${WORKSPACE}/* /backup/My-Pipeline-${BUILD_NUMBER}/
@@ -55,4 +58,19 @@ pipeline {
         // }
 
     }
+    // post {
+    //     success {
+    //         sh '''
+    //         echo "✅ Build successful. Taking backup..."
+
+    //         BACKUP_DIR="/var/jenkins_home/backups/My-Pipeline/build-${BUILD_NUMBER}"
+
+    //         mkdir -p $BACKUP_DIR
+
+    //         cp -r ${WORKSPACE}/* $BACKUP_DIR/
+
+    //         echo "📦 Backup stored at $BACKUP_DIR"
+    //         '''
+    //     }
+    // }
 }
