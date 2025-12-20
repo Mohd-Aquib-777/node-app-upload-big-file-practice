@@ -5,17 +5,39 @@ pipeline {
         stage('Checkout') {
             steps {
                 // This pulls your code from Git
-                checkout scm
+                git branch: 'mainmaster-jenkins-practice', url: 'https://github.com/Mohd-Aquib-777/node-app-upload-big-file-practice.git'
             }
         }
 
         stage('Docker Compose Up') {
             steps {
                 script {
-                    // -d runs it in the background
-                    // --build ensures images are updated if Dockerfiles changed
-                    sh 'docker compose up -d --build'
+                    try{
+                        sh '''
+                        pwd
+                        ls
+                        docker compose up -d --build
+                        '''
+                        // -d runs it in the background
+                        // --build ensures images are updated if Dockerfiles changed
+                        // sh 'docker compose up -d --build'
+                    }catch(err){
+                        echo "Failed to start docker compose ${err}"
+                        currentBuild.result = 'FAILURE'
+                    }
                 }
+            }
+        }
+
+        stage('Backup Last Successful Build') {
+            when {
+                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+            }
+            steps {
+                sh '''
+                mkdir -p /backup/My-Pipeline-${BUILD_NUMBER}
+                cp -r ${WORKSPACE}/* /backup/My-Pipeline-${BUILD_NUMBER}/
+                '''
             }
         }
 
@@ -31,5 +53,6 @@ pipeline {
                 // sh 'docker compose down'
             }
         }
+
     }
 }
