@@ -47,12 +47,12 @@ pipeline {
             }
         }
         
-        stage('Cleanup (Optional)') {
-            steps {
-                // Use this if you only want to run tests and then shut down
-                // sh 'docker compose down'
-            }
-        }
+        // stage('Cleanup (Optional)') {
+        //     steps {
+        //         // Use this if you only want to run tests and then shut down
+        //         // sh 'docker compose down'
+        //     }
+        // }
 
     }
 }
