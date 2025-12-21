@@ -20,6 +20,7 @@ pipeline {
                         docker compose down
                         docker compose up -d --build
                         '''
+                        currentBuild.result = 'SUCCESS'
                         // -d runs it in the background
                         // --build ensures images are updated if Dockerfiles changed
                         // sh 'docker compose up -d --build'
@@ -36,6 +37,7 @@ pipeline {
                 expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
             }
             steps {
+                echo "build status=======**********=================${currentBuild}"
                 sh 'currentBuild = ${currentBuild}'
                 sh '''
                 mkdir -p /backup/My-Pipeline-${BUILD_NUMBER}
