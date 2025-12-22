@@ -20,6 +20,11 @@ pipeline {
                         docker compose down
                         docker compose up -d --build
                         '''
+                        sh '''
+                        tar -czf /tmp/${JOB_NAME}_workspace_$(date +%F).tar.gz $WORKSPACE
+                        docker cp jenkins:/tmp/${JOB_NAME}_workspace_$(date +%F).tar.gz /myProject/${JOB_NAME}/
+                        '''
+                        
                         currentBuild.result = 'SUCCESS'
                         // -d runs it in the background
                         // --build ensures images are updated if Dockerfiles changed
@@ -32,19 +37,19 @@ pipeline {
             }
         }
 
-        stage('Backup Last Successful Build') {
-            when {
-                expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
-            }
-            steps {
-                echo "build status=======**********=================${currentBuild}"
-                sh 'currentBuild = ${currentBuild}'
-                sh '''
-                mkdir -p /backup/My-Pipeline-${BUILD_NUMBER}
-                cp -r ${WORKSPACE}/* /backup/My-Pipeline-${BUILD_NUMBER}/
-                '''
-            }
-        }
+        // stage('Backup Last Successful Build') {
+        //     when {
+        //         expression { currentBuild.result == null || currentBuild.result == 'SUCCESS' }
+        //     }
+        //     steps {
+        //         echo "build status=======**********=================${currentBuild}"
+        //         sh 'currentBuild = ${currentBuild}'
+        //         sh '''
+        //         mkdir -p /backup/My-Pipeline-${BUILD_NUMBER}
+        //         cp -r ${WORKSPACE}/* /backup/My-Pipeline-${BUILD_NUMBER}/
+        //         '''
+        //     }
+        // }
 
         stage('Verify Services') {
             steps {
