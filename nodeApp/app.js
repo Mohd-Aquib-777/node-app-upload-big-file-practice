@@ -61,8 +61,8 @@ app.get("/get-data", (req, res) => {
     // console.log("@@@@@@@@@@@@@@", req.body);
     const info = getRequestInfo(req);
 
-    console.log("headers++++++++++cdcd  d fcdscds+aaa", info)
-    res.json({ message: "data saved", info });
+    console.log("headers++++++++++cdcd  d fcdscds+aaa==========", info)
+    res.json({ message: "data saved", info, change: "this is changed" });
 });
 
 
