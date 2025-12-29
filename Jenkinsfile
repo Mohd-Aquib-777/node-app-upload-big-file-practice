@@ -22,7 +22,7 @@ pipeline {
                         '''
                         sh '''
                         tar -czf /tmp/${JOB_NAME}_workspace_$(date +%F).tar.gz $WORKSPACE
-                        docker cp jenkins:/tmp/${JOB_NAME}_workspace_$(date +%F).tar.gz /myProject/${JOB_NAME}/
+                        docker cp jenkins:/tmp/${JOB_NAME}_workspace_$(date +%F).tar.gz /myProject/backups/${JOB_NAME}/
                         '''
                         
                         currentBuild.result = 'SUCCESS'
